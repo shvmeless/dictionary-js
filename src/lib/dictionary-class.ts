@@ -72,4 +72,75 @@ export class Dictionary<V> {
     return this
   }
 
+  /**
+   * Returns a random key-value pair from the dictionary.
+  */
+  public random (): [string, V] | undefined {
+    const entries = this.entries()
+    const index = Math.floor(Math.random() * entries.length)
+    return entries[index]
+  }
+
+  /**
+   * Creates and returns a new `Dictionary` instance containing a copy of all entries from the current dictionary
+  */
+  public copy (): Dictionary<V> {
+    const copy: Record<string, V> = {}
+    for (const [key, value] of this.entries()) {
+      copy[key] = value
+    }
+    return new Dictionary(copy)
+  }
+
+  /**
+   * Returns `true` if the specified keys exist in the dictionary, otherwise returns `false`.
+  */
+  public has (...search: Array<string>): boolean {
+    if (search.length === 0) return false
+    for (const key of search) {
+      const item = this.object[key]
+      if (item !== undefined) continue
+      return false
+    }
+    return true
+  }
+
+  /**
+   * Returns `true` if at least one of the specified keys exists in the dictionary, otherwise returns `false`.
+  */
+  public hasOneOf (...search: Array<string>): boolean {
+    if (search.length === 0) return false
+    for (const key of search) {
+      const item = this.object[key]
+      if (item === undefined) continue
+      return true
+    }
+    return false
+  }
+
+  /**
+   * Returns `true` if all specified values exist in the dictionary, otherwise returns `false`.
+  */
+  public includes (...search: Array<V>): boolean {
+    if (search.length === 0) return false
+    for (const value of this.values()) {
+      const index = search.indexOf(value)
+      if (index < 0) continue
+      search.splice(index, 1)
+    }
+    return (search.length === 0)
+  }
+
+  /**
+   * Returns `true` if at least one of the specified values exists in the dictionary, otherwise returns `false`.
+  */
+  public includesOneOf (...search: Array<V>): boolean {
+    if (search.length === 0) return false
+    for (const value of this.values()) {
+      if (!search.includes(value)) continue
+      return true
+    }
+    return false
+  }
+
 }
