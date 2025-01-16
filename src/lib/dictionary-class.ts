@@ -143,4 +143,61 @@ export class Dictionary<V> {
     return false
   }
 
+  /**
+   * Removes all entries from the dictionary.
+  */
+  public clear (): this {
+    for (const key of this.keys()) {
+      delete this.object[key]
+    }
+    return this
+  }
+
+  /**
+   * Keeps entries matching at least one of the provided keys and removes the rest.
+  */
+  public retain (...keys: Array<string>): this {
+    if (keys.length === 0) return this
+    for (const [key] of this.entries()) {
+      if (keys.includes(key)) continue
+      delete this.object[key]
+    }
+    return this
+  }
+
+  /**
+   * Removes entries matching at least one of the provided keys.
+  */
+  public delete (...keys: Array<string>): this {
+    if (keys.length === 0) return this
+    for (const key of keys) {
+      delete this.object[key]
+    }
+    return this
+  }
+
+  /**
+   * Keeps entries matching at least one of the provided values and removes the rest.
+  */
+  public retainValues (...values: Array<V>): this {
+    if (values.length === 0) return this
+    for (const key of this.keys()) {
+      if (values.includes(this.object[key])) continue
+      delete this.object[key]
+    }
+    return this
+  }
+
+  /**
+   * Removes entries matching at least one of the provided values.
+  */
+  public deleteValues (...values: Array<V>): this {
+    if (values.length === 0) return this
+    for (const key of this.keys()) {
+      if (!values.includes(this.object[key])) continue
+      delete this.object[key]
+    }
+    return this
+  }
+
 }
