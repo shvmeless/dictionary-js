@@ -7,8 +7,15 @@ export class Dictionary<V> {
   /**
    * Creates an instance of Dictionary.
   */
-  constructor (object?: Record<string, V>) {
-    this.object = { ...object ?? {} }
+  constructor (entries?: Record<string, V> | Array<[string, V]>) {
+    if (Array.isArray(entries)) {
+      this.object = {}
+      for (const [key, value] of entries) {
+        this.object[key] = value
+      }
+      return
+    }
+    this.object = { ...entries ?? {} }
   }
 
   /**

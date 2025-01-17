@@ -12,13 +12,22 @@ describe('new Dictionary()', () => {
     expect(result).toStrictEqual({})
 
   })
-  it('should create a dictionary copying the entries of the passed object', () => {
+  it('should initialize the dictionary by copying the entries of the provided record', () => {
 
     const object = { a: 1, b: 2, c: 3 }
     const dictionary = new Dictionary(object)
 
     const result = dictionary.record()
-    expect(result).toStrictEqual(object)
+    expect(result).toStrictEqual({ a: 1, b: 2, c: 3 })
+
+  })
+  it('should initialize the dictionary by copying the entries of the provided array', () => {
+
+    const array: Array<[string, number]> = [['a', 1], ['b', 2], ['c', 3]]
+    const dictionary = new Dictionary(array)
+
+    const result = dictionary.record()
+    expect(result).toStrictEqual({ a: 1, b: 2, c: 3 })
 
   })
 })
