@@ -200,4 +200,71 @@ export class Dictionary<V> {
     return this
   }
 
+  /**
+   * Combines the dictionary with another object, overwriting duplicate entries and adding new ones.
+  */
+  public merge (dictionary: Record<string, V> | Dictionary<V>): this {
+    const entries = (dictionary instanceof Dictionary) ? dictionary.entries() : Object.entries(dictionary)
+    for (const [key, value] of entries) {
+      this.object[key] = value
+    }
+    return this
+  }
+
+  /**
+   * Combines the dictionary with another object, adding new entries and ignoring duplicates.
+  */
+  public mergeDifference (dictionary: Record<string, V> | Dictionary<V>): this {
+    const entries = (dictionary instanceof Dictionary) ? dictionary.entries() : Object.entries(dictionary)
+    for (const [key, value] of entries) {
+      if (this.object[key] !== undefined) continue
+      this.object[key] = value
+    }
+    return this
+  }
+
+  /**
+   * Combines the dictionary with another object, overwriting only the duplicate entries.
+  */
+  public mergeIntersection (dictionary: Record<string, V> | Dictionary<V>): this {
+    const entries = (dictionary instanceof Dictionary) ? dictionary.entries() : Object.entries(dictionary)
+    for (const [key, value] of entries) {
+      if (this.object[key] === undefined) continue
+      this.object[key] = value
+    }
+    return this
+  }
+
+  /**
+   * Combines the dictionary with another object, adding new entries and removing duplicates.
+  */
+  public difference (dictionary: Record<string, V> | Dictionary<V>): this {
+    const entries = (dictionary instanceof Dictionary) ? dictionary.entries() : Object.entries(dictionary)
+    for (const [key, value] of entries) {
+      if (this.object[key] !== undefined) {
+        delete this.object[key]
+        continue
+      }
+      this.object[key] = value
+    }
+    return this
+  }
+
+  /**
+   * Combines the dictionary with another object, retaining only the duplicate entries and removing the rest.
+  */
+  public intersection (dictionary: Record<string, V> | Dictionary<V>): this {
+    const queue = new Set(this.keys())
+    const entries = (dictionary instanceof Dictionary) ? dictionary.entries() : Object.entries(dictionary)
+    for (const [key, value] of entries) {
+      if (this.object[key] === undefined) continue
+      this.object[key] = value
+      queue.delete(key)
+    }
+    for (const key of queue) {
+      delete this.object[key]
+    }
+    return this
+  }
+
 }
