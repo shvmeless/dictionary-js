@@ -267,4 +267,140 @@ export class Dictionary<V> {
     return this
   }
 
+  /**
+   * Executes a provided function for each entry in the dictionary.
+  */
+  public forEach (callback: (value: V, key: string, dictionary: this) => void): void {
+    for (const [key, value] of this.entries()) {
+      callback(value, key, this)
+    }
+  }
+
+  /**
+   * Returns `true` if at least one entry satisfies the provided condition, otherwise `false`.
+  */
+  public some (callback: (value: V, key: string, dictionary: this) => boolean): boolean {
+    for (const [key, value] of this.entries()) {
+      const condition = callback(value, key, this)
+      if (!condition) continue
+      return true
+    }
+    return false
+  }
+
+  /**
+   * Returns `true` if all entries satisfy the provided condition, otherwise `false`.
+  */
+  public every (callback: (value: V, key: string, dictionary: this) => boolean): boolean {
+    for (const [key, value] of this.entries()) {
+      const condition = callback(value, key, this)
+      if (condition) continue
+      return false
+    }
+    return true
+  }
+
+  /**
+   * Returns one of the entries that satisfies the provided condition, or `undefined` if none is found.
+  */
+  public find (callback: (value: V, key: string, dictionary: this) => boolean): ([string, V] | undefined) {
+    for (const [key, value] of this.entries()) {
+      const condition = callback(value, key, this)
+      if (!condition) continue
+      return [key, value]
+    }
+    return undefined
+  }
+
+  /**
+   * Returns the number of entries that satisfy the provided condition.
+  */
+  public count (callback: (value: V, key: string, dictionary: this) => boolean): number {
+    let count = 0
+    for (const [key, value] of this.entries()) {
+      const condition = callback(value, key, this)
+      if (!condition) continue
+      count++
+    }
+    return count
+  }
+
+  /**
+   * Applies a cumulative function to all dictionary entries, returning the accumulated result.
+  */
+  public reduce <U> (callback: (previous: U, value: V, key: string, dictionary: this) => U, initial: U): U {
+    let result = initial
+    for (const [key, value] of this.entries()) {
+      result = callback(result, value, key, this)
+    }
+    return result
+  }
+
+  /**
+   * Filters the dictionary, removing entries that do not satisfy the provided condition.
+  */
+  public filter (callback: (value: V, key: string, dictionary: this) => boolean): this {
+    for (const [key, value] of this.entries()) {
+      const condition = callback(value, key, this)
+      if (condition) continue
+      delete this.object[key]
+    }
+    return this
+  }
+
+  /**
+   * Returns a new `Dictionary`, mapping each entry to a new value based on the provided function.
+  */
+  public map <V2> (callback: (value: V, key: string, dictionary: this) => (V2 | undefined)): Dictionary<V2> {
+    const result: Record<string, V2> = {}
+    for (const [key, value] of this.entries()) {
+      const newValue = callback(value, key, this)
+      if (newValue === undefined) continue
+      result[key] = newValue
+    }
+    return new Dictionary(result)
+  }
+
+  /**
+   * Transforms the keys of all dictionary entries based on the provided function.
+  */
+  public transformKeys (callback: (value: V, key: string, dictionary: this) => (string | undefined)): this {
+    for (const [key, value] of this.entries()) {
+      const newKey = callback(value, key, this)
+      delete this.object[key]
+      if (newKey === undefined) continue
+      this.object[newKey] = value
+    }
+    return this
+  }
+
+  /**
+   * Transforms the values of all dictionary entries based on the provided function.
+  */
+  public transformValues (callback: (value: V, key: string, dictionary: this) => (V | undefined)): this {
+    for (const [key, value] of this.entries()) {
+      const newValue = callback(value, key, this)
+      if (newValue === undefined) {
+        delete this.object[key]
+        continue
+      }
+      this.object[key] = newValue
+    }
+    return this
+  }
+
+  /**
+   * Transforms both keys and values of all dictionary entries based on the provided function.
+  */
+  public transformEntries (callback: (value: V, key: string, dictionary: this) => ([string, V] | undefined)): this {
+    for (const [key, value] of this.entries()) {
+      const newEntry = callback(value, key, this)
+      delete this.object[key]
+      if (newEntry === undefined) continue
+      const [newKey, newValue] = newEntry
+      this.object[newKey] = newValue
+    }
+    return this
+  }
+
 }
