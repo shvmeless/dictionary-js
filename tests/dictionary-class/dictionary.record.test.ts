@@ -4,7 +4,7 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.record()', () => {
-  it('should return an empty record when the dictionary is empty', () => {
+  it('should return an empty Record if the Dictionary is empty', () => {
 
     const dictionary = new Dictionary()
 
@@ -12,26 +12,21 @@ describe('Dictionary.record()', () => {
     expect(result).toStrictEqual({})
 
   })
-  it('should return a record containing all current dictionary entries', () => {
+  it('should return an Record with all current entries', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
-
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.record()
     expect(result).toStrictEqual({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
   })
-  it('should return a different record each time it is called', () => {
+  it('should return a unique Record for each call', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    const result1 = dictionary.record()
-    const result2 = dictionary.record()
-    expect(result1).not.toBe(result2)
+    const a = dictionary.record()
+    const b = dictionary.record()
+    expect(a).not.toBe(b)
 
   })
 })

@@ -4,25 +4,17 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.every()', () => {
-  it('should return `false` at least one entry does not satisfy the condition', () => {
+  it('should return `false` if at least one entry does not meet the condition', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
-
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.every((value) => (value >= 2 && value <= 4))
     expect(result).toStrictEqual(false)
 
   })
-  it('should return `true` when all entries satisfy the condition', () => {
+  it('should return `true` if all entries meet the condition', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
-
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.every((value) => (value >= 1 && value <= 5))
     expect(result).toStrictEqual(true)

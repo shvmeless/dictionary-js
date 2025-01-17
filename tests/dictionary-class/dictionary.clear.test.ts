@@ -4,25 +4,17 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.clear()', () => {
-  it('should return `this` always', () => {
+  it('should always return `this`', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
-
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.clear()
     expect(result).toBe(dictionary)
 
   })
-  it('should remove all the entries', () => {
+  it('should remove all entries', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
-
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     dictionary.clear()
     expect(dictionary.record()).toStrictEqual({})

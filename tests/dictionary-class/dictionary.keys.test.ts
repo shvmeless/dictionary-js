@@ -4,7 +4,7 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.keys()', () => {
-  it('should return an empty array when the dictionary is empty', () => {
+  it('should return an empty array if the Dictionary is empty', () => {
 
     const dictionary = new Dictionary()
 
@@ -12,26 +12,21 @@ describe('Dictionary.keys()', () => {
     expect(result).toStrictEqual([])
 
   })
-  it('should return an array containing all current dictionary keys', () => {
+  it('should return an array with all current keys', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
-
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.keys()
     expect(result).toStrictEqual(['a', 'b', 'c', 'd', 'e'])
 
   })
-  it('should return a different array each time it is called', () => {
+  it('should return a unique array for each call', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    const result1 = dictionary.keys()
-    const result2 = dictionary.keys()
-    expect(result1).not.toBe(result2)
+    const a = dictionary.keys()
+    const b = dictionary.keys()
+    expect(a).not.toBe(b)
 
   })
 })

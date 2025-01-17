@@ -4,7 +4,7 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('.random()', () => {
-  it('should return `undefined` when the dictionary is empty', () => {
+  it('should return `undefined` if the Dictionary is empty', () => {
 
     const dictionary = new Dictionary()
 
@@ -14,16 +14,12 @@ describe('.random()', () => {
     }
 
   })
-  it('should return a random entry from the dictionary', () => {
+  it('should return a random entry', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
-
-    const results = []
     const options = [['a', 1], ['b', 2], ['c', 3], ['d', 4], ['e', 5]]
+    const results = []
 
     for (let i = 0; i < 1000; i++) {
       const result = dictionary.random()

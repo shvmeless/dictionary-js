@@ -4,37 +4,32 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.get()', () => {
-  it('should return `undefined` the key does not exist', () => {
+  it('should return `undefined` if the key does not exist', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.get('x')
     expect(result).toBeUndefined()
 
   })
-  it('should return the value associated with the key when it exists', () => {
+  it('should return the value associated with the key if it exists', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const a = dictionary.get('a')
+    expect(a).toBe(1)
 
-    const result1 = dictionary.get('a')
-    expect(result1).toBe(1)
+    const b = dictionary.get('b')
+    expect(b).toBe(2)
 
-    const result2 = dictionary.get('b')
-    expect(result2).toBe(2)
+    const c = dictionary.get('c')
+    expect(c).toBe(3)
 
-    const result3 = dictionary.get('c')
-    expect(result3).toBe(3)
+    const d = dictionary.get('d')
+    expect(d).toBe(4)
 
-    const result4 = dictionary.get('d')
-    expect(result4).toBe(4)
-
-    const result5 = dictionary.get('e')
-    expect(result5).toBe(5)
+    const e = dictionary.get('e')
+    expect(e).toBe(5)
 
   })
 })

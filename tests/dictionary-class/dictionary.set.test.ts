@@ -4,36 +4,47 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.set()', () => {
-  it('should return `this` always', () => {
+  it('should always return `this`', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    const result = dictionary.set('d', 4)
+    const result = dictionary.set('x', 0)
     expect(result).toBe(dictionary)
 
   })
-  it('should add a new entry to the dictionary when the key does not exist', () => {
+  it('should create a new entry if it does not already exists', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    dictionary.set('x', 0)
+    dictionary.set('y', 0)
+    dictionary.set('z', 0)
 
-    expect(dictionary.record()).toStrictEqual({ a: 1, b: 2, c: 3, d: 4, e: 5 })
+    expect(dictionary.record()).toStrictEqual({ a: 1, b: 2, c: 3, d: 4, e: 5, x: 0, y: 0, z: 0 })
 
   })
-  it('should overwrite an existing entry in the dictionary when the key exists', () => {
+  it('should overwrite the entry if it already exists', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     dictionary.set('a', 0)
-    dictionary.set('b', 0)
     dictionary.set('c', 0)
+    dictionary.set('e', 0)
 
-    expect(dictionary.record()).toStrictEqual({ a: 0, b: 0, c: 0 })
+    expect(dictionary.record()).toStrictEqual({ a: 0, b: 2, c: 0, d: 4, e: 0 })
+
+  })
+  it('should create/overwrite the entries as needed', () => {
+
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
+
+    dictionary.set('a', 0)
+    dictionary.set('c', 0)
+    dictionary.set('e', 0)
+    dictionary.set('x', 0)
+    dictionary.set('y', 0)
+
+    expect(dictionary.record()).toStrictEqual({ a: 0, b: 2, c: 0, d: 4, e: 0, x: 0, y: 0 })
 
   })
 })

@@ -4,7 +4,7 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.size()', () => {
-  it('should return 0 when the dictionary is empty', () => {
+  it('should return `0` if the Dictionary is empty', () => {
 
     const dictionary = new Dictionary({})
 
@@ -12,13 +12,9 @@ describe('Dictionary.size()', () => {
     expect(result).toBe(0)
 
   })
-  it('should return current number of entries in the dictionary', () => {
+  it('should return the current number of entries', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
-
-    dictionary.set('d', 4)
-    dictionary.set('e', 5)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.size()
     expect(result).toBe(5)

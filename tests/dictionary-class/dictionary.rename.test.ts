@@ -4,49 +4,45 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.rename()', () => {
-  it('should return `this` always.', () => {
+  it('should always return `this`', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.rename('a', 'x')
     expect(result).toBe(dictionary)
 
   })
-  it('should not do anything when the given key does not exists.', () => {
+  it('should do nothing if the specified key does not exist', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     dictionary.rename('j', 'x')
     dictionary.rename('k', 'y')
     dictionary.rename('l', 'z')
 
-    expect(dictionary.record()).toStrictEqual({ a: 1, b: 2, c: 3 })
+    expect(dictionary.record()).toStrictEqual({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
   })
-  it('should rename the entry when the given key does not exists in the dictionary.', () => {
+  it('should rename the entry if the new key does not exist', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     dictionary.rename('a', 'x')
-    dictionary.rename('b', 'y')
-    dictionary.rename('c', 'z')
+    dictionary.rename('c', 'y')
+    dictionary.rename('e', 'z')
 
-    expect(dictionary.record()).toStrictEqual({ x: 1, y: 2, z: 3 })
+    expect(dictionary.record()).toStrictEqual({ x: 1, b: 2, y: 3, d: 4, z: 5 })
 
   })
-  it('should overwrite the entry when the given key exists in the dictionary.', () => {
+  it('should overwrite the entry if the new key already exists', () => {
 
-    const object = { a: 1, b: 2, c: 3 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    dictionary.rename('a', 'c')
-    dictionary.rename('b', 'a')
-    dictionary.rename('c', 'b')
+    dictionary.rename('a', 'e')
+    dictionary.rename('c', 'a')
+    dictionary.rename('e', 'c')
 
-    expect(dictionary.record()).toStrictEqual({ b: 1, a: 2 })
+    expect(dictionary.record()).toStrictEqual({ c: 1, b: 2, a: 3, d: 4 })
 
   })
 })

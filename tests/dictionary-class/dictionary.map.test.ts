@@ -4,27 +4,34 @@ import { Dictionary } from '../../src'
 
 // TESTS
 describe('Dictionary.map()', () => {
-  it('should overwrite all values', () => {
+  it('should return a new Dictionary instance', () => {
 
-    const object: Record<string, number> = { a: 1, b: 2, c: 3, d: 4, e: 5 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
-    const result = dictionary.map((value) => (value * 100))
-    expect(result.record()).toStrictEqual({ a: 100, b: 200, c: 300, d: 400, e: 500 })
+    const result = dictionary.map((value) => (value.toString()))
+    expect(result).instanceOf(Dictionary)
+    expect(result).not.toBe(dictionary)
+
+  })
+  it('should iterate over each entry and apply apply the transformation function', () => {
+
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
+
+    const result = dictionary.map((value) => (value.toString()))
+    expect(result.record()).toStrictEqual({ a: '1', b: '2', c: '3', d: '4', e: '5' })
     expect(dictionary.record()).toStrictEqual({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
   })
-  it('should remove the entries when the callback returns `undefined`', () => {
+  it('should skip entries when the transformation function returns `undefined`', () => {
 
-    const object: Record<string, number> = { a: 1, b: 2, c: 3, d: 4, e: 5 }
-    const dictionary = new Dictionary(object)
+    const dictionary = new Dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
     const result = dictionary.map((value) => {
-      if (value >= 2 && value <= 4) return (value * 100)
-      return undefined
+      if (value < 2 || value > 4) return undefined
+      return value.toString()
     })
 
-    expect(result.record()).toStrictEqual({ b: 200, c: 300, d: 400 })
+    expect(result.record()).toStrictEqual({ b: '2', c: '3', d: '4' })
     expect(dictionary.record()).toStrictEqual({ a: 1, b: 2, c: 3, d: 4, e: 5 })
 
   })
