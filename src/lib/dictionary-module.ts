@@ -130,5 +130,52 @@ export function dictionary<V> (object: Record<string, V>) {
       return false
     },
 
+    /**
+     * Keeps entries matching at least one of the provided keys and removes the rest.
+    */
+    retain (...keys: Array<string>): Record<string, V> {
+      if (keys.length === 0) return object
+      for (const [key] of this.entries()) {
+        if (keys.includes(key)) continue
+        delete object[key]
+      }
+      return object
+    },
+
+    /**
+     * Removes entries matching at least one of the provided keys.
+    */
+    delete (...keys: Array<string>): Record<string, V> {
+      if (keys.length === 0) return object
+      for (const key of keys) {
+        delete object[key]
+      }
+      return object
+    },
+
+    /**
+     * Keeps entries matching at least one of the provided values and removes the rest.
+    */
+    retainValues (...values: Array<V>): Record<string, V> {
+      if (values.length === 0) return object
+      for (const key of this.keys()) {
+        if (values.includes(object[key])) continue
+        delete object[key]
+      }
+      return object
+    },
+
+    /**
+     * Removes entries matching at least one of the provided values.
+    */
+    deleteValues (...values: Array<V>): Record<string, V> {
+      if (values.length === 0) return object
+      for (const key of this.keys()) {
+        if (!values.includes(object[key])) continue
+        delete object[key]
+      }
+      return object
+    },
+
   }
 }
