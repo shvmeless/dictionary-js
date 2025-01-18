@@ -63,7 +63,7 @@ export function dictionary<V> (object: Record<string, V>) {
      * Returns a random key-value pair from the dictionary.
     */
     random (): [string, V] | undefined {
-      const entries = this.entries()
+      const entries = Object.entries(object)
       const index = Math.floor(Math.random() * entries.length)
       return entries[index]
     },
@@ -73,7 +73,7 @@ export function dictionary<V> (object: Record<string, V>) {
     */
     copy (): Record<string, V> {
       const copy: Record<string, V> = {}
-      for (const [key, value] of this.entries()) {
+      for (const [key, value] of Object.entries(object)) {
         copy[key] = value
       }
       return copy
@@ -135,7 +135,7 @@ export function dictionary<V> (object: Record<string, V>) {
     */
     retain (...keys: Array<string>): Record<string, V> {
       if (keys.length === 0) return object
-      for (const [key] of this.entries()) {
+      for (const [key] of Object.entries(object)) {
         if (keys.includes(key)) continue
         delete object[key]
       }
@@ -237,6 +237,127 @@ export function dictionary<V> (object: Record<string, V>) {
         delete object[key]
       }
       return object
+    },
+
+    /**
+     * Executes a provided function for each entry in the dictionary.
+    */
+    forEach (callback: (value: V, key: string, dictionary: Record<string, V>) => void): void {
+      for (const [key, value] of Object.entries(object)) {
+        callback(value, key, object)
+      }
+    },
+
+    /**
+     * Returns `true` if at least one entry satisfies the provided condition, otherwise `false`.
+    */
+    some (callback: (value: V, key: string, dictionary: Record<string, V>) => boolean): boolean {
+      for (const [key, value] of Object.entries(object)) {
+        const condition = callback(value, key, object)
+        if (!condition) continue
+        return true
+      }
+      return false
+    },
+
+    /**
+     * Returns `true` if all entries satisfy the provided condition, otherwise `false`.
+    */
+    every (callback: (value: V, key: string, dictionary: Record<string, V>) => boolean): boolean {
+      for (const [key, value] of Object.entries(object)) {
+        const condition = callback(value, key, object)
+        if (condition) continue
+        return false
+      }
+      return true
+    },
+
+    /**
+     * Returns one of the entries that satisfies the provided condition, or `undefined` if none is found.
+    */
+    find (callback: (value: V, key: string, dictionary: Record<string, V>) => boolean): ([string, V] | undefined) {
+      for (const [key, value] of Object.entries(object)) {
+        const condition = callback(value, key, object)
+        if (!condition) continue
+        return [key, value]
+      }
+      return undefined
+    },
+
+    /**
+     * Returns the number of entries that satisfy the provided condition.
+    */
+    count (callback: (value: V, key: string, dictionary: Record<string, V>) => boolean): number {
+      let count = 0
+      for (const [key, value] of Object.entries(object)) {
+        const condition = callback(value, key, object)
+        if (!condition) continue
+        count++
+      }
+      return count
+    },
+
+    /**
+     * Applies a cumulative function to all dictionary entries, returning the accumulated result.
+    */
+    reduce <U> (callback: (previous: U, value: V, key: string, dictionary: Record<string, V>) => U, initial: U): U {
+      let result = initial
+      for (const [key, value] of Object.entries(object)) {
+        result = callback(result, value, key, object)
+      }
+      return result
+    },
+
+    /**
+     * Filters the dictionary, removing entries that do not satisfy the provided condition.
+    */
+    filter (callback: (value: V, key: string, dictionary: Record<string, V>) => boolean): Record<string, V> {
+      for (const [key, value] of Object.entries(object)) {
+        const condition = callback(value, key, object)
+        if (condition) continue
+        delete object[key]
+      }
+      return object
+    },
+
+    /**
+     * Transforms the keys of all dictionary entries based on the provided function.
+    */
+    transformKeys (callback: (value: V, key: string, dictionary: Record<string, V>) => (string | undefined)): Record<string, V> {
+      for (const [key, value] of Object.entries(object)) {
+        const newKey = callback(value, key, object)
+        delete object[key]
+        if (newKey === undefined) continue
+        object[newKey] = value
+      }
+      return object
+    },
+
+    /**
+     * Transforms the values of all dictionary entries based on the provided function.
+    */
+    transformValues <V2> (callback: (value: V, key: string, dictionary: Record<string, V>) => (V2 | undefined)): Record<string, V2> {
+      const result: Record<string, V2> = {}
+      for (const [key, value] of Object.entries(object)) {
+        const newValue = callback(value, key, object)
+        if (newValue === undefined) continue
+        result[key] = newValue
+      }
+      return result
+    },
+
+    /**
+     * Transforms both keys and values of all dictionary entries based on the provided function.
+    */
+    transformEntries <V2> (callback: (value: V, key: string, dictionary: Record<string, V>) => ([string, V2] | undefined)): Record<string, V2> {
+      const result: Record<string, V2> = {}
+      for (const [key, value] of Object.entries(object)) {
+        const newEntry = callback(value, key, object)
+        if (newEntry === undefined) continue
+        const [newKey, newValue] = newEntry
+        result[newKey] = newValue
+      }
+      return result
     },
 
   }
