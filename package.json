@@ -1,7 +1,7 @@
 {
   "name": "@shvmeless/dictionary",
   "description": "A custom tool to work with dictionaries in JavaScript.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "author": {
     "name": "Luciano Aedo Puga",
