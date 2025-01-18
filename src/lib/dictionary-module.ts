@@ -69,17 +69,6 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Creates and returns a new `Dictionary` instance containing a copy of all entries from the current dictionary
-    */
-    copy (): Record<string, V> {
-      const copy: Record<string, V> = {}
-      for (const [key, value] of Object.entries(object)) {
-        copy[key] = value
-      }
-      return copy
-    },
-
-    /**
      * Returns `true` if the specified keys exist in the dictionary, otherwise returns `false`.
     */
     has (...search: Array<string>): boolean {
