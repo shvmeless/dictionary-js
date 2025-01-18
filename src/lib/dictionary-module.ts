@@ -41,7 +41,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Assigns a value to a specific key in the dictionary.
+     * Returns a copy of the dictionary and assigns a value to a specific key.
     */
     set (key: string, value: V): Record<string, V> {
       object[key] = value
@@ -49,7 +49,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Renames the key of a specific dictionary entry.
+     * Returns a copy of the dictionary and renames the key of a specific dictionary entry.
     */
     rename (key: string, newKey: string): Record<string, V> {
       const value = object[key]
@@ -120,7 +120,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Keeps entries matching at least one of the provided keys and removes the rest.
+     * Returns a copy of the dictionary, keeps entries matching at least one of the provided keys and removes the rest.
     */
     retain (...keys: Array<string>): Record<string, V> {
       if (keys.length === 0) return object
@@ -132,7 +132,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Removes entries matching at least one of the provided keys.
+     * Returns a copy of the dictionary, removes entries matching at least one of the provided keys.
     */
     delete (...keys: Array<string>): Record<string, V> {
       if (keys.length === 0) return object
@@ -143,7 +143,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Keeps entries matching at least one of the provided values and removes the rest.
+     * Returns a copy of the dictionary, keeps entries matching at least one of the provided values and removes the rest.
     */
     retainValues (...values: Array<V>): Record<string, V> {
       if (values.length === 0) return object
@@ -155,7 +155,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Removes entries matching at least one of the provided values.
+     * Returns a copy of the dictionary, removes entries matching at least one of the provided values.
     */
     deleteValues (...values: Array<V>): Record<string, V> {
       if (values.length === 0) return object
@@ -167,7 +167,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Combines the dictionary with another object, overwriting duplicate entries and adding new ones.
+     * Returns the combination of the dictionary with another dictionary, overwriting duplicate entries and adding new ones.
     */
     merge (dictionary: Record<string, V>): Record<string, V> {
       for (const [key, value] of Object.entries(dictionary)) {
@@ -177,7 +177,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Combines the dictionary with another object, adding new entries and ignoring duplicates.
+     * Returns the combination of the dictionary with another dictionary, adding new entries and ignoring duplicates.
     */
     mergeDifference (dictionary: Record<string, V>): Record<string, V> {
       for (const [key, value] of Object.entries(dictionary)) {
@@ -188,7 +188,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Combines the dictionary with another object, overwriting only the duplicate entries.
+     * Returns the combination of the dictionary with another dictionary, overwriting only the duplicate entries.
     */
     mergeIntersection (dictionary: Record<string, V>): Record<string, V> {
       for (const [key, value] of Object.entries(dictionary)) {
@@ -199,7 +199,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Combines the dictionary with another object, adding new entries and removing duplicates.
+     * Returns the combination of the dictionary with another dictionary, adding new entries and removing duplicates.
     */
     difference (dictionary: Record<string, V>): Record<string, V> {
       for (const [key, value] of Object.entries(dictionary)) {
@@ -213,7 +213,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Combines the dictionary with another object, retaining only the duplicate entries and removing the rest.
+     * Returns the combination of the dictionary with another dictionary, retaining only the duplicate entries and removing the rest.
     */
     intersection (dictionary: Record<string, V>): Record<string, V> {
       const queue = new Set(this.keys())
@@ -298,7 +298,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Filters the dictionary, removing entries that do not satisfy the provided condition.
+     * Returns a copy of the dictionary, removing entries that do not satisfy the provided condition.
     */
     filter (callback: (value: V, key: string, dictionary: Record<string, V>) => boolean): Record<string, V> {
       for (const [key, value] of Object.entries(object)) {
@@ -310,7 +310,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Transforms the keys of all dictionary entries based on the provided function.
+     * Returns the result of transforming the keys of the dictionary entries based on the provided function.
     */
     transformKeys (callback: (value: V, key: string, dictionary: Record<string, V>) => (string | undefined)): Record<string, V> {
       for (const [key, value] of Object.entries(object)) {
@@ -323,7 +323,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Transforms the values of all dictionary entries based on the provided function.
+     * Returns the result of transforming the values of the dictionary entries based on the provided function.
     */
     transformValues <V2> (callback: (value: V, key: string, dictionary: Record<string, V>) => (V2 | undefined)): Record<string, V2> {
       const result: Record<string, V2> = {}
@@ -336,7 +336,7 @@ export function dictionary<V> (object: Record<string, V>) {
     },
 
     /**
-     * Transforms both keys and values of all dictionary entries based on the provided function.
+     * Returns the result of transforming both the keys and values of the dictionary entries based on the provided function.
     */
     transformEntries <V2> (callback: (value: V, key: string, dictionary: Record<string, V>) => ([string, V2] | undefined)): Record<string, V2> {
       const result: Record<string, V2> = {}
