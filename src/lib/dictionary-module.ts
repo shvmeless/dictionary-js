@@ -177,5 +177,67 @@ export function dictionary<V> (object: Record<string, V>) {
       return object
     },
 
+    /**
+     * Combines the dictionary with another object, overwriting duplicate entries and adding new ones.
+    */
+    merge (dictionary: Record<string, V>): Record<string, V> {
+      for (const [key, value] of Object.entries(dictionary)) {
+        object[key] = value
+      }
+      return object
+    },
+
+    /**
+     * Combines the dictionary with another object, adding new entries and ignoring duplicates.
+    */
+    mergeDifference (dictionary: Record<string, V>): Record<string, V> {
+      for (const [key, value] of Object.entries(dictionary)) {
+        if (object[key] !== undefined) continue
+        object[key] = value
+      }
+      return object
+    },
+
+    /**
+     * Combines the dictionary with another object, overwriting only the duplicate entries.
+    */
+    mergeIntersection (dictionary: Record<string, V>): Record<string, V> {
+      for (const [key, value] of Object.entries(dictionary)) {
+        if (object[key] === undefined) continue
+        object[key] = value
+      }
+      return object
+    },
+
+    /**
+     * Combines the dictionary with another object, adding new entries and removing duplicates.
+    */
+    difference (dictionary: Record<string, V>): Record<string, V> {
+      for (const [key, value] of Object.entries(dictionary)) {
+        if (object[key] !== undefined) {
+          delete object[key]
+          continue
+        }
+        object[key] = value
+      }
+      return object
+    },
+
+    /**
+     * Combines the dictionary with another object, retaining only the duplicate entries and removing the rest.
+    */
+    intersection (dictionary: Record<string, V>): Record<string, V> {
+      const queue = new Set(this.keys())
+      for (const [key, value] of Object.entries(dictionary)) {
+        if (object[key] === undefined) continue
+        object[key] = value
+        queue.delete(key)
+      }
+      for (const key of queue) {
+        delete object[key]
+      }
+      return object
+    },
+
   }
 }
