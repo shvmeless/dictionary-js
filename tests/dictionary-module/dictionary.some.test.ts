@@ -16,4 +16,14 @@ describe('dictionary.some()', () => {
     expect(result).toStrictEqual(true)
 
   })
+  it('should provide the dictionary in callback function', () => {
+
+    let original: Record<string, number> | null = null
+    dictionary({ a: 1, b: 2, c: 3, d: 4, e: 5 }).some((value, key, dictionary) => {
+      if (original === null) original = dictionary
+      expect(original).toBe(dictionary)
+      return false
+    })
+
+  })
 })
